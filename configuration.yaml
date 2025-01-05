@@ -1,15 +1,10 @@
-
-# configuration.yaml
-
 sensor:
   - platform: rest
-    name: RescueTime Daily Summary
-    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key=YOUR_API_KEY"
-    method: GET
-    scan_interval: 86400  # Fetch data once per day
-    value_template: "{{ value_json[0]['productivity_pulse'] if value_json[0]['date'] == (now().date() - timedelta(days=1)).strftime('%Y-%m-%d') else 'No data' }}"
+    name: RescueTime Data
+    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key={{ secrets.rescuetime_api_key }}"
+    scan_interval: 3600
+    value_template: "{{ value_json[0].date }}"
     json_attributes:
-      - date
       - productivity_pulse
       - very_productive_percentage
       - productive_percentage
@@ -49,196 +44,94 @@ sensor:
       - shopping_hours
       - utilities_hours
 
-template:
-  - sensor:
+  - platform: template
+    sensors:
+      productivity_pulse:
+        friendly_name: "Productivity Pulse"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'productivity_pulse') }}"
+        unit_of_measurement: "%"
 
-      - name: RescueTime Yesterday Productivity Pulse
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'productivity_pulse') }}"
-        unit_of_measurement: "Pulse"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Very Productive Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'very_productive_percentage') }}"
+      very_productive_percentage:
+        friendly_name: "Very Productive Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_productive_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Productive Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'productive_percentage') }}"
+
+      productive_percentage:
+        friendly_name: "Productive Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'productive_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Neutral Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'neutral_percentage') }}"
+
+      neutral_percentage:
+        friendly_name: "Neutral Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'neutral_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Distracting Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'distracting_percentage') }}"
+
+      distracting_percentage:
+        friendly_name: "Distracting Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'distracting_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Very Distracting Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'very_distracting_percentage') }}"
+
+      very_distracting_percentage:
+        friendly_name: "Very Distracting Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_distracting_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday All Productive Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'all_productive_percentage') }}"
+
+      all_productive_percentage:
+        friendly_name: "All Productive Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'all_productive_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday All Distracting Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'all_distracting_percentage') }}"
+
+      all_distracting_percentage:
+        friendly_name: "All Distracting Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'all_distracting_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Uncategorized Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'uncategorized_percentage') }}"
+
+      total_hours:
+        friendly_name: "Total Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'total_hours') }}"
+        unit_of_measurement: "hours"
+
+      very_productive_hours:
+        friendly_name: "Very Productive Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_productive_hours') }}"
+        unit_of_measurement: "hours"
+
+      productive_hours:
+        friendly_name: "Productive Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'productive_hours') }}"
+        unit_of_measurement: "hours"
+
+      neutral_hours:
+        friendly_name: "Neutral Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'neutral_hours') }}"
+        unit_of_measurement: "hours"
+
+      distracting_hours:
+        friendly_name: "Distracting Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'distracting_hours') }}"
+        unit_of_measurement: "hours"
+
+      very_distracting_hours:
+        friendly_name: "Very Distracting Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_distracting_hours') }}"
+        unit_of_measurement: "hours"
+
+      entertainment_percentage:
+        friendly_name: "Entertainment Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'entertainment_percentage') }}"
         unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Business Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'business_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Communication And Scheduling Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'communication_and_scheduling_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Social Networking Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'social_networking_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Design And Composition Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'design_and_composition_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Entertainment Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'entertainment_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday News Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'news_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Software Development Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'software_development_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Reference And Learning Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'reference_and_learning_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Shopping Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'shopping_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Utilities Percentage
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'utilities_percentage') }}"
-        unit_of_measurement: "%"
-        device_class: measurement
-    
-      - name: RescueTime Yesterday Total Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'total_hours') }}"
+
+      business_hours:
+        friendly_name: "Business Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'business_hours') }}"
         unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Very Productive Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'very_productive_hours') }}"
+
+      shopping_hours:
+        friendly_name: "Shopping Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'shopping_hours') }}"
         unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Productive Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'productive_hours') }}"
+
+      utilities_hours:
+        friendly_name: "Utilities Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'utilities_hours') }}"
         unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Neutral Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'neutral_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Distracting Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'distracting_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Very Distracting Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'very_distracting_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday All Productive Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'all_productive_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday All Distracting Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'all_distracting_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Uncategorized Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'uncategorized_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Business Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'business_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Communication And Scheduling Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'communication_and_scheduling_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Social Networking Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'social_networking_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Design And Composition Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'design_and_composition_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Entertainment Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'entertainment_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday News Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'news_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Software Development Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'software_development_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Reference And Learning Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'reference_and_learning_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Shopping Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'shopping_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
-      - name: RescueTime Yesterday Utilities Hours
-        state: "{{ state_attr('sensor.rescuetime_daily_summary', 'utilities_hours') }}"
-        unit_of_measurement: "hours"
-        device_class: duration
-    
