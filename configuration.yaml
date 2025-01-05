@@ -1,8 +1,9 @@
 sensor:
   - platform: rest
     name: RescueTime Data
-    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key={{ secrets.rescuetime_api_key }}"
-    scan_interval: 3600
+    unique_id: "rescuetime_data"
+    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key=sss"
+    scan_interval: 86400
     value_template: "{{ value_json[0].date }}"
     json_attributes:
       - productivity_pulse
@@ -47,91 +48,192 @@ sensor:
   - platform: template
     sensors:
       productivity_pulse:
+        unique_id: "productivity_pulse"
         friendly_name: "Productivity Pulse"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'productivity_pulse') }}"
         unit_of_measurement: "%"
-
       very_productive_percentage:
+        unique_id: "very_productive_percentage"
         friendly_name: "Very Productive Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'very_productive_percentage') }}"
         unit_of_measurement: "%"
-
       productive_percentage:
+        unique_id: "productive_percentage"
         friendly_name: "Productive Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'productive_percentage') }}"
         unit_of_measurement: "%"
-
       neutral_percentage:
+        unique_id: "neutral_percentage"
         friendly_name: "Neutral Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'neutral_percentage') }}"
         unit_of_measurement: "%"
-
       distracting_percentage:
+        unique_id: "distracting_percentage"
         friendly_name: "Distracting Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'distracting_percentage') }}"
         unit_of_measurement: "%"
-
       very_distracting_percentage:
+        unique_id: "very_distracting_percentage"
         friendly_name: "Very Distracting Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'very_distracting_percentage') }}"
         unit_of_measurement: "%"
-
       all_productive_percentage:
+        unique_id: "all_productive_percentage"
         friendly_name: "All Productive Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'all_productive_percentage') }}"
         unit_of_measurement: "%"
-
       all_distracting_percentage:
+        unique_id: "all_distracting_percentage"
         friendly_name: "All Distracting Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'all_distracting_percentage') }}"
         unit_of_measurement: "%"
-
-      total_hours:
-        friendly_name: "Total Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'total_hours') }}"
-        unit_of_measurement: "hours"
-
-      very_productive_hours:
-        friendly_name: "Very Productive Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_productive_hours') }}"
-        unit_of_measurement: "hours"
-
-      productive_hours:
-        friendly_name: "Productive Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'productive_hours') }}"
-        unit_of_measurement: "hours"
-
-      neutral_hours:
-        friendly_name: "Neutral Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'neutral_hours') }}"
-        unit_of_measurement: "hours"
-
-      distracting_hours:
-        friendly_name: "Distracting Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'distracting_hours') }}"
-        unit_of_measurement: "hours"
-
-      very_distracting_hours:
-        friendly_name: "Very Distracting Hours"
-        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_distracting_hours') }}"
-        unit_of_measurement: "hours"
-
+      uncategorized_percentage:
+        unique_id: "uncategorized_percentage"
+        friendly_name: "Uncategorized Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'uncategorized_percentage') }}"
+        unit_of_measurement: "%"
+      business_percentage:
+        unique_id: "business_percentage"
+        friendly_name: "Business Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'business_percentage') }}"
+        unit_of_measurement: "%"
+      communication_and_scheduling_percentage:
+        unique_id: "communication_and_scheduling_percentage"
+        friendly_name: "Communication and Scheduling Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'communication_and_scheduling_percentage') }}"
+        unit_of_measurement: "%"
+      social_networking_percentage:
+        unique_id: "social_networking_percentage"
+        friendly_name: "Social Networking Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'social_networking_percentage') }}"
+        unit_of_measurement: "%"
+      design_and_composition_percentage:
+        unique_id: "design_and_composition_percentage"
+        friendly_name: "Design and Composition Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'design_and_composition_percentage') }}"
+        unit_of_measurement: "%"
       entertainment_percentage:
+        unique_id: "entertainment_percentage"
         friendly_name: "Entertainment Percentage"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'entertainment_percentage') }}"
         unit_of_measurement: "%"
-
+      news_percentage:
+        unique_id: "news_percentage"
+        friendly_name: "News Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'news_percentage') }}"
+        unit_of_measurement: "%"
+      software_development_percentage:
+        unique_id: "software_development_percentage"
+        friendly_name: "Software Development Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'software_development_percentage') }}"
+        unit_of_measurement: "%"
+      reference_and_learning_percentage:
+        unique_id: "reference_and_learning_percentage"
+        friendly_name: "Reference and Learning Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'reference_and_learning_percentage') }}"
+        unit_of_measurement: "%"
+      shopping_percentage:
+        unique_id: "shopping_percentage"
+        friendly_name: "Shopping Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'shopping_percentage') }}"
+        unit_of_measurement: "%"
+      utilities_percentage:
+        unique_id: "utilities_percentage"
+        friendly_name: "Utilities Percentage"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'utilities_percentage') }}"
+        unit_of_measurement: "%"
+      total_hours:
+        unique_id: "total_hours"
+        friendly_name: "Total Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'total_hours') }}"
+        unit_of_measurement: "h"
+      very_productive_hours:
+        unique_id: "very_productive_hours"
+        friendly_name: "Very Productive Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_productive_hours') }}"
+        unit_of_measurement: "h"
+      productive_hours:
+        unique_id: "productive_hours"
+        friendly_name: "Productive Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'productive_hours') }}"
+        unit_of_measurement: "h"
+      neutral_hours:
+        unique_id: "neutral_hours"
+        friendly_name: "Neutral Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'neutral_hours') }}"
+        unit_of_measurement: "h"
+      distracting_hours:
+        unique_id: "distracting_hours"
+        friendly_name: "Distracting Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'distracting_hours') }}"
+        unit_of_measurement: "h"
+      very_distracting_hours:
+        unique_id: "very_distracting_hours"
+        friendly_name: "Very Distracting Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'very_distracting_hours') }}"
+        unit_of_measurement: "h"
+      all_productive_hours:
+        unique_id: "all_productive_hours"
+        friendly_name: "All Productive Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'all_productive_hours') }}"
+        unit_of_measurement: "h"
+      all_distracting_hours:
+        unique_id: "all_distracting_hours"
+        friendly_name: "All Distracting Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'all_distracting_hours') }}"
+        unit_of_measurement: "h"
+      uncategorized_hours:
+        unique_id: "uncategorized_hours"
+        friendly_name: "Uncategorized Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'uncategorized_hours') }}"
+        unit_of_measurement: "h"
       business_hours:
+        unique_id: "business_hours"
         friendly_name: "Business Hours"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'business_hours') }}"
-        unit_of_measurement: "hours"
-
+        unit_of_measurement: "h"
+      communication_and_scheduling_hours:
+        unique_id: "communication_and_scheduling_hours"
+        friendly_name: "Communication and Scheduling Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'communication_and_scheduling_hours') }}"
+        unit_of_measurement: "h"
+      social_networking_hours:
+        unique_id: "social_networking_hours"
+        friendly_name: "Social Networking Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'social_networking_hours') }}"
+        unit_of_measurement: "h"
+      design_and_composition_hours:
+        unique_id: "design_and_composition_hours"
+        friendly_name: "Design and Composition Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'design_and_composition_hours') }}"
+        unit_of_measurement: "h"
+      entertainment_hours:
+        unique_id: "entertainment_hours"
+        friendly_name: "Entertainment Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'entertainment_hours') }}"
+        unit_of_measurement: "h"
+      news_hours:
+        unique_id: "news_hours"
+        friendly_name: "News Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'news_hours') }}"
+        unit_of_measurement: "h"
+      software_development_hours:
+        unique_id: "software_development_hours"
+        friendly_name: "Software Development Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'software_development_hours') }}"
+        unit_of_measurement: "h"
+      reference_and_learning_hours:
+        unique_id: "reference_and_learning_hours"
+        friendly_name: "Reference and Learning Hours"
+        value_template: "{{ state_attr('sensor.rescuetime_data', 'reference_and_learning_hours') }}"
+        unit_of_measurement: "h"
       shopping_hours:
+        unique_id: "shopping_hours"
         friendly_name: "Shopping Hours"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'shopping_hours') }}"
-        unit_of_measurement: "hours"
-
+        unit_of_measurement: "h"
       utilities_hours:
+        unique_id: "utilities_hours"
         friendly_name: "Utilities Hours"
         value_template: "{{ state_attr('sensor.rescuetime_data', 'utilities_hours') }}"
-        unit_of_measurement: "hours"
+        unit_of_measurement: "h"
