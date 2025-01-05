@@ -2,7 +2,7 @@ sensor:
   - platform: rest
     name: RescueTime Data
     unique_id: "rescuetime_data"
-    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key=sss"
+    resource: "https://www.rescuetime.com/anapi/daily_summary_feed?key=YOUR_API_KEY"
     scan_interval: 86400
     value_template: "{{ value_json[0].date }}"
     json_attributes:
